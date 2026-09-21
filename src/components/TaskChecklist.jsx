@@ -108,10 +108,9 @@ export default function TaskChecklist({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex items-center transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none"
-      style={{
-        transform: `translate(${isExpanded ? '0%' : '-100%'}, -50%)`,
-      }}
+      className={`fixed left-0 top-1/2 -translate-y-1/2 z-50 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none ${
+        isExpanded ? 'translate-x-0' : '-translate-x-full'
+      }`}
     >
       {/* Extended Checklist Panel */}
       <div className="w-80 sm:w-96 max-h-[82vh] bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl rounded-r-3xl p-5 flex flex-col justify-between overflow-hidden">
@@ -320,21 +319,21 @@ export default function TaskChecklist({
           playClick(0.2);
           setIsPinned(!isPinned);
         }}
-        className={`flex flex-col items-center justify-center py-4 px-2.5 rounded-r-2xl bg-slate-900/90 backdrop-blur-2xl border border-l-0 border-white/25 shadow-2xl cursor-pointer select-none transition-all duration-300 group hover:bg-slate-900 hover:border-white/40 ${
-          isExpanded ? 'opacity-85' : 'opacity-95 hover:pl-3'
+        className={`absolute left-full top-1/2 -translate-y-1/2 flex flex-col items-center justify-center py-5 px-3 rounded-r-2xl bg-slate-900/95 backdrop-blur-2xl border-2 border-l-0 border-white/30 shadow-2xl cursor-pointer select-none group hover:bg-slate-900 hover:border-white/50 transition-all ${
+          isExpanded ? 'opacity-90' : 'opacity-100 hover:pl-4'
         }`}
-        style={{ minWidth: '38px' }}
+        style={{ minWidth: '42px' }}
         title={isExpanded ? 'Click to pin / unpin' : 'Hover to open checklist'}
       >
-        <ListTodo className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform mb-2.5" />
+        <ListTodo className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform mb-2.5 drop-shadow-sm" />
 
         {/* Vertical Text */}
-        <span className="[writing-mode:vertical-lr] text-[10px] tracking-widest font-extrabold uppercase text-white/80 group-hover:text-white transition-colors py-1">
+        <span className="[writing-mode:vertical-lr] text-[10px] tracking-widest font-extrabold uppercase text-white/90 group-hover:text-white transition-colors py-1">
           Tasks
         </span>
 
         {/* Mini Completed Counter Badge */}
-        <span className="mt-2.5 px-1 py-0.5 text-[9px] font-bold rounded-full bg-white/15 text-white/90 border border-white/20 tabular-nums">
+        <span className="mt-2.5 px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-emerald-500/25 text-emerald-200 border border-emerald-400/40 tabular-nums">
           {completedCount}/{tasks.length}
         </span>
       </div>
