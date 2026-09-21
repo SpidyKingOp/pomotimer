@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pomotimer-v1';
+const CACHE_NAME = 'pomotimer-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

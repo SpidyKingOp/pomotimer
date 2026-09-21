@@ -86,7 +86,7 @@ export default function ReportModal({
             </div>
 
             <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center">
-              <img src="/logo.png" alt="Sessions" className="w-4 h-4 object-contain mx-auto mb-1" />
+              <img src="/logo.png" alt="Sessions" className="w-4 h-4 object-contain mx-auto mb-1" style={{ imageRendering: 'pixelated' }} />
               <p className="text-lg font-bold text-white">{stats.todaySessions || 0}</p>
               <p className="text-[10px] text-white/50 font-medium">Sessions Today</p>
             </div>

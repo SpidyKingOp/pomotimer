@@ -45,7 +45,7 @@ export default function ZenMode({
       {/* Top Bar: Close button & Mode */}
       <div className="w-full max-w-4xl flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="PomoTimer Logo" className="w-5 h-5 object-contain" />
+          <img src="/logo.png" alt="PomoTimer Logo" className="w-5 h-5 object-contain" style={{ imageRendering: 'pixelated' }} />
           <span className="text-xs uppercase tracking-widest font-bold text-white/60">
             Zen Focus Mode
           </span>
