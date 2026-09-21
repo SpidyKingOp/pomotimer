@@ -275,10 +275,6 @@ export default function App() {
         themeConfig={activeModeTheme}
       />
 
-      {/* Subtle Footer */}
-      <footer className="w-full text-center py-4 text-xs text-white/40 tracking-wider">
-        PomoTimer • Built with modern frosted glassmorphism & Web Audio API
-      </footer>
 
       {/* Modals & Overlays */}
       <SettingsModal
