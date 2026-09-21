@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Flame, Clock, CheckCircle, BarChart, RotateCcw } from 'lucide-react';
+import { X, Flame, Clock, CheckCircle, BarChart, BarChart3, Target, RotateCcw } from 'lucide-react';
 import { playClick } from '../utils/sound';
 
 export default function ReportModal({
@@ -43,7 +43,7 @@ export default function ReportModal({
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
           <div className="flex items-center gap-2">
-            <span className="text-lg">📊</span>
+            <BarChart3 className="w-5 h-5 text-white/90" />
             <h2 className="text-base font-bold tracking-wide">Focus Report & Activity</h2>
           </div>
           <button
@@ -86,7 +86,7 @@ export default function ReportModal({
             </div>
 
             <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center">
-              <span className="text-sm block mb-0.5">🍅</span>
+              <img src="/logo.png" alt="Sessions" className="w-4 h-4 object-contain mx-auto mb-1" />
               <p className="text-lg font-bold text-white">{stats.todaySessions || 0}</p>
               <p className="text-[10px] text-white/50 font-medium">Sessions Today</p>
             </div>

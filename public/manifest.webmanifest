@@ -1,0 +1,25 @@
+{
+  "name": "PomoTimer — Modern Focus",
+  "short_name": "PomoTimer",
+  "description": "Distraction-Free Modern Pomodoro Focus Application",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#ba4949",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import ReportModal from './components/ReportModal';
 import ZenMode from './components/ZenMode';
 import { THEMES, DEFAULT_THEME } from './utils/themes';
 import { playAlarm } from './utils/sound';
+import { sendPushNotification } from './utils/notifications';
 import {
   loadSettings,
   saveSettings,
@@ -121,6 +122,8 @@ export default function App() {
   // Advance to the next mode after timer ends or skip
   const advanceToNextMode = () => {
     if (mode === 'pomodoro') {
+      sendPushNotification('Focus Session Complete!', 'Time to rest and recharge.');
+
       // Record completed work session
       const updatedStats = recordCompletedSession('pomodoro', settings.pomodoro);
       if (updatedStats) setStats(updatedStats);
@@ -142,6 +145,8 @@ export default function App() {
       setSessionDuration(dur);
       setIsRunning(settings.autoStartBreaks);
     } else {
+      sendPushNotification('Break Finished!', 'Ready to dive back in? Time to focus.');
+
       // Break finished, go back to pomodoro
       const nextCycle = cycleCount + 1;
       const dur = getModeDuration('pomodoro');

@@ -1,7 +1,8 @@
-import React from 'react';
-import { X, Volume2, VolumeX, Sparkles, Clock, Bell, Palette } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Volume2, VolumeX, Sparkles, Clock, Bell, Palette, Settings } from 'lucide-react';
 import { THEMES } from '../utils/themes';
 import { playAlarm, playClick } from '../utils/sound';
+import { getNotificationPermission, requestNotificationPermission, sendPushNotification } from '../utils/notifications';
 
 export default function SettingsModal({
   isOpen,
@@ -10,6 +11,7 @@ export default function SettingsModal({
   onUpdateSettings,
   themeConfig
 }) {
+  const [notifPermission, setNotifPermission] = useState(getNotificationPermission);
   if (!isOpen) return null;
 
   const handleChange = (key, value) => {
@@ -36,7 +38,7 @@ export default function SettingsModal({
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
           <div className="flex items-center gap-2">
-            <span className="text-lg">⚙️</span>
+            <Settings className="w-5 h-5 text-white/90" />
             <h2 className="text-base font-bold tracking-wide">Settings</h2>
           </div>
           <button
@@ -144,6 +146,32 @@ export default function SettingsModal({
                 onChange={(e) => handleChange('longBreakInterval', Math.max(1, parseInt(e.target.value) || 1))}
                 className="w-16 bg-white/10 border border-white/15 rounded-xl px-2.5 py-1 text-xs font-semibold text-center focus:outline-none focus:border-white/40"
               />
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
+              <div>
+                <p className="text-xs font-semibold">Desktop Push Alerts</p>
+                <p className="text-[11px] text-white/50">Notify when timer ends</p>
+              </div>
+              <button
+                type="button"
+                onClick={async () => {
+                  const perm = await requestNotificationPermission();
+                  setNotifPermission(perm);
+                  if (perm === 'granted') {
+                    sendPushNotification('PomoTimer', 'Desktop alerts are now active!');
+                  }
+                }}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-xl border transition-all ${
+                  notifPermission === 'granted'
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
+                    : notifPermission === 'denied'
+                    ? 'bg-red-500/20 text-red-300 border-red-400/30 cursor-not-allowed'
+                    : 'bg-white/15 text-white/80 hover:text-white border-white/20'
+                }`}
+              >
+                {notifPermission === 'granted' ? 'Enabled' : notifPermission === 'denied' ? 'Blocked' : 'Enable'}
+              </button>
             </div>
           </div>
 
