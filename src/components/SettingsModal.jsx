@@ -30,7 +30,7 @@ export default function SettingsModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div 
-        className={`w-full max-w-md ${themeConfig?.modalBg || 'bg-slate-900/95 border-white/20 shadow-2xl'} backdrop-blur-2xl text-white rounded-3xl border overflow-hidden animate-scale-up max-h-[90vh] flex flex-col transition-colors duration-500`}
+        className={`w-full max-w-md ${themeConfig?.modalBg || 'bg-slate-900/95 border-white/20'} backdrop-blur-2xl text-white rounded-3xl border overflow-hidden animate-scale-up max-h-[90vh] flex flex-col transition-colors duration-500 shadow-none`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
