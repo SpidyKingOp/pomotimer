@@ -272,6 +272,7 @@ export default function App() {
         tasks={tasks}
         setTasks={handleTasksChange}
         onTaskCompleted={handleTaskCompleted}
+        themeConfig={activeModeTheme}
       />
 
       {/* Subtle Footer */}
@@ -285,6 +286,7 @@ export default function App() {
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
         onUpdateSettings={handleUpdateSettings}
+        themeConfig={activeModeTheme}
       />
 
       <ReportModal
@@ -292,6 +294,7 @@ export default function App() {
         onClose={() => setIsReportOpen(false)}
         stats={stats}
         onResetStats={handleResetStats}
+        themeConfig={activeModeTheme}
       />
 
       <ZenMode

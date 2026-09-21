@@ -19,7 +19,8 @@ import { playClick } from '../utils/sound';
 export default function TaskChecklist({
   tasks,
   setTasks,
-  onTaskCompleted
+  onTaskCompleted,
+  themeConfig
 }) {
   const [newTitle, setNewTitle] = useState('');
   const [isAdding, setIsAdding] = useState(false);
@@ -113,15 +114,15 @@ export default function TaskChecklist({
       }`}
     >
       {/* Extended Checklist Panel */}
-      <div className="w-80 sm:w-96 max-h-[82vh] bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl rounded-r-3xl p-5 flex flex-col justify-between overflow-hidden">
+      <div className={`w-80 sm:w-96 max-h-[82vh] ${themeConfig?.modalBg || 'bg-slate-900/95 border-white/20 shadow-2xl'} backdrop-blur-2xl border rounded-r-3xl p-5 flex flex-col justify-between overflow-hidden transition-all duration-500`}>
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
           <div className="flex items-center gap-2">
-            <ListTodo className="w-4 h-4 text-emerald-400" />
+            <ListTodo className={`w-4 h-4 ${themeConfig?.accentIcon || 'text-emerald-400'}`} />
             <h2 className="text-sm font-bold text-white tracking-wide">
               Focus Checklist
             </h2>
-            <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-white/15 text-white/80 border border-white/10">
+            <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full border ${themeConfig?.badge || 'bg-white/15 text-white/80 border-white/10'}`}>
               {completedCount}/{tasks.length}
             </span>
           </div>
@@ -319,13 +320,13 @@ export default function TaskChecklist({
           playClick(0.2);
           setIsPinned(!isPinned);
         }}
-        className={`absolute left-full top-1/2 -translate-y-1/2 flex flex-col items-center justify-center py-5 px-3 rounded-r-2xl bg-slate-900/95 backdrop-blur-2xl border-2 border-l-0 border-white/30 shadow-2xl cursor-pointer select-none group hover:bg-slate-900 hover:border-white/50 transition-all ${
+        className={`absolute left-full top-1/2 -translate-y-1/2 flex flex-col items-center justify-center py-5 px-3 rounded-r-2xl ${themeConfig?.notchBg || 'bg-slate-900/95 border-white/30 text-white'} backdrop-blur-2xl border-2 border-l-0 shadow-2xl cursor-pointer select-none group transition-all duration-500 ${
           isExpanded ? 'opacity-90' : 'opacity-100 hover:pl-4'
         }`}
         style={{ minWidth: '42px' }}
         title={isExpanded ? 'Click to pin / unpin' : 'Hover to open checklist'}
       >
-        <ListTodo className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform mb-2.5 drop-shadow-sm" />
+        <ListTodo className={`w-4 h-4 ${themeConfig?.accentIcon || 'text-emerald-400'} group-hover:scale-110 transition-transform mb-2.5 drop-shadow-sm`} />
 
         {/* Vertical Text */}
         <span className="[writing-mode:vertical-lr] text-[10px] tracking-widest font-extrabold uppercase text-white/90 group-hover:text-white transition-colors py-1">
@@ -333,7 +334,7 @@ export default function TaskChecklist({
         </span>
 
         {/* Mini Completed Counter Badge */}
-        <span className="mt-2.5 px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-emerald-500/25 text-emerald-200 border border-emerald-400/40 tabular-nums">
+        <span className={`mt-2.5 px-1.5 py-0.5 text-[9px] font-bold rounded-full border tabular-nums ${themeConfig?.badge || 'bg-emerald-500/25 text-emerald-200 border-emerald-400/40'}`}>
           {completedCount}/{tasks.length}
         </span>
       </div>
