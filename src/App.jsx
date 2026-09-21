@@ -265,14 +265,14 @@ export default function App() {
           activeTask={activeTask}
           themeConfig={activeModeTheme}
         />
-
-        {/* Task Checklist */}
-        <TaskChecklist
-          tasks={tasks}
-          setTasks={handleTasksChange}
-          onTaskCompleted={handleTaskCompleted}
-        />
       </main>
+
+      {/* Left Wall Slide-Out Notch & Focus Checklist */}
+      <TaskChecklist
+        tasks={tasks}
+        setTasks={handleTasksChange}
+        onTaskCompleted={handleTaskCompleted}
+      />
 
       {/* Subtle Footer */}
       <footer className="w-full text-center py-4 text-xs text-white/40 tracking-wider">
