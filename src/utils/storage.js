@@ -12,13 +12,28 @@ export const DEFAULT_SETTINGS = {
   alarmSound: 'bell', // 'bell' | 'digital' | 'zen' | 'kitchen'
   volume: 0.7,
   theme: 'sunset', // 'sunset' | 'aurora' | 'emerald' | 'obsidian'
+  backgroundEffect: 'dots', // 'dots' | 'none'
+  dotMatrixMods: {
+    enableRipple: true,
+    enableRepulsion: true,
+    enableIdleWave: true,
+    enableColorTint: true,
+  },
 };
 
 export function loadSettings() {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (!raw) return DEFAULT_SETTINGS;
-    return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+    const parsed = JSON.parse(raw);
+    return {
+      ...DEFAULT_SETTINGS,
+      ...parsed,
+      dotMatrixMods: {
+        ...DEFAULT_SETTINGS.dotMatrixMods,
+        ...(parsed.dotMatrixMods || {}),
+      },
+    };
   } catch {
     return DEFAULT_SETTINGS;
   }

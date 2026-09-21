@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Volume2, VolumeX, Sparkles, Clock, Bell, Palette, Settings } from 'lucide-react';
+import { X, Volume2, VolumeX, Sparkles, Clock, Bell, Palette, Settings, Layers } from 'lucide-react';
 import { THEMES } from '../utils/themes';
 import { playAlarm, playClick } from '../utils/sound';
 import { getNotificationPermission, requestNotificationPermission, sendPushNotification } from '../utils/notifications';
@@ -256,6 +256,74 @@ export default function SettingsModal({
                 );
               })}
             </div>
+          </div>
+
+          {/* Section 5: Dot Matrix Atmosphere & Modifiers */}
+          <div className="space-y-3 pt-3 border-t border-white/10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white/60">
+                <Layers className="w-3.5 h-3.5" />
+                <span>Dot Matrix Grid</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const current = settings.backgroundEffect || 'dots';
+                  handleChange('backgroundEffect', current === 'dots' ? 'none' : 'dots');
+                }}
+                className={`px-2.5 py-1 text-xs font-semibold rounded-lg border transition-all ${
+                  (settings.backgroundEffect || 'dots') === 'dots'
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
+                    : 'bg-white/10 text-white/60 border-white/15 hover:text-white'
+                }`}
+              >
+                {(settings.backgroundEffect || 'dots') === 'dots' ? 'Enabled' : 'Disabled'}
+              </button>
+            </div>
+
+            {(settings.backgroundEffect || 'dots') === 'dots' && (
+              <div className="space-y-2 pt-1">
+                <p className="text-[11px] font-semibold text-white/50 uppercase tracking-wider">Active Modifiers</p>
+                
+                {[
+                  { key: 'enableRipple', label: 'Click Shockwave Ripple', desc: 'Expanding wave across dots on click' },
+                  { key: 'enableRepulsion', label: 'Elastic Repulsion', desc: 'Dots push away and snap back from mouse' },
+                  { key: 'enableIdleWave', label: 'Ambient Idle Wave', desc: 'Gentle breathing undulation when idle' },
+                  { key: 'enableColorTint', label: 'Theme Color Glow', desc: 'Tints dots to match Pomodoro & break modes' },
+                ].map((mod) => {
+                  const currentMods = settings.dotMatrixMods || {
+                    enableRipple: true,
+                    enableRepulsion: true,
+                    enableIdleWave: true,
+                    enableColorTint: true,
+                  };
+                  const isChecked = currentMods[mod.key] !== false;
+
+                  return (
+                    <label
+                      key={mod.key}
+                      className="flex items-center justify-between p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer transition-colors"
+                    >
+                      <div className="pr-3">
+                        <p className="text-xs font-medium text-white">{mod.label}</p>
+                        <p className="text-[10px] text-white/50">{mod.desc}</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) => {
+                          handleChange('dotMatrixMods', {
+                            ...currentMods,
+                            [mod.key]: e.target.checked,
+                          });
+                        }}
+                        className="w-4 h-4 rounded accent-rose-500 cursor-pointer"
+                      />
+                    </label>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 

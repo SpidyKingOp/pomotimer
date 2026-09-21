@@ -6,6 +6,7 @@ import TaskChecklist from './components/TaskChecklist';
 import SettingsModal from './components/SettingsModal';
 import ReportModal from './components/ReportModal';
 import ZenMode from './components/ZenMode';
+import BackgroundController from './components/backgrounds/BackgroundController';
 import { THEMES, DEFAULT_THEME } from './utils/themes';
 import { playAlarm } from './utils/sound';
 import { sendPushNotification } from './utils/notifications';
@@ -244,8 +245,15 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br ${activeModeTheme.bg} transition-colors duration-700 ease-in-out text-white flex flex-col justify-between`}
+      className={`min-h-screen relative overflow-x-hidden bg-gradient-to-br ${activeModeTheme.bg} transition-colors duration-700 ease-in-out text-white flex flex-col justify-between`}
     >
+      {/* Background Atmosphere Layer */}
+      <BackgroundController
+        effect={settings.backgroundEffect || 'dots'}
+        mode={mode}
+        mods={settings.dotMatrixMods}
+      />
+
       {/* Navbar */}
       <Navbar
         onOpenReport={() => setIsReportOpen(true)}
@@ -279,7 +287,6 @@ export default function App() {
         onTaskCompleted={handleTaskCompleted}
         themeConfig={activeModeTheme}
       />
-
 
       {/* Modals & Overlays */}
       <SettingsModal
