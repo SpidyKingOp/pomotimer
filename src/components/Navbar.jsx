@@ -17,11 +17,11 @@ export default function Navbar({
     <header className="w-full px-6 sm:px-10 lg:px-12 py-5 flex items-center justify-between z-20">
       {/* Brand / Logo */}
       <div className="flex items-center gap-2.5 group cursor-pointer select-none">
-        <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 shadow-md group-hover:scale-105 transition-transform duration-300 p-1">
+        <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 shadow-md group-hover:scale-105 transition-transform duration-300 p-1">
           <img 
             src="/logo.png" 
             alt="PomoTimer Logo" 
-            className="w-8 h-8 object-contain transform group-hover:rotate-12 transition-transform duration-300 drop-shadow-sm" 
+            className="w-9 h-9 object-contain transform group-hover:rotate-12 transition-transform duration-300 drop-shadow-sm" 
             style={{ imageRendering: 'pixelated' }}
           />
           <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white/30 animate-pulse" />

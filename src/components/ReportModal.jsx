@@ -80,8 +80,8 @@ export default function ReportModal({
           {/* Quick Metrics Grid */}
           <div className="grid grid-cols-3 gap-2.5">
             <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center flex flex-col items-center justify-between">
-              <div className="h-8 flex items-center justify-center mb-1">
-                <Clock className="w-5 h-5 text-emerald-400" />
+              <div className="h-10 flex items-center justify-center mb-1">
+                <Clock className="w-6 h-6 text-emerald-400" />
               </div>
               <div>
                 <p className="text-lg font-bold text-white leading-tight">{formatMinutes(stats.todayMinutes || 0)}</p>
@@ -90,8 +90,8 @@ export default function ReportModal({
             </div>
 
             <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center flex flex-col items-center justify-between">
-              <div className="h-8 flex items-center justify-center mb-1">
-                <img src="/logo.png" alt="Sessions" className="w-7 h-7 object-contain drop-shadow-sm" style={{ imageRendering: 'pixelated' }} />
+              <div className="h-10 flex items-center justify-center mb-1">
+                <img src="/logo.png" alt="Sessions" className="w-9 h-9 object-contain drop-shadow-sm" style={{ imageRendering: 'pixelated' }} />
               </div>
               <div>
                 <p className="text-lg font-bold text-white leading-tight">{stats.todaySessions || 0}</p>
@@ -100,8 +100,8 @@ export default function ReportModal({
             </div>
 
             <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center flex flex-col items-center justify-between">
-              <div className="h-8 flex items-center justify-center mb-1">
-                <CheckCircle className="w-5 h-5 text-blue-400" />
+              <div className="h-10 flex items-center justify-center mb-1">
+                <CheckCircle className="w-6 h-6 text-blue-400" />
               </div>
               <div>
                 <p className="text-lg font-bold text-white leading-tight">{stats.tasksCompleted || 0}</p>
