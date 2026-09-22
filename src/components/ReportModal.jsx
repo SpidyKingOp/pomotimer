@@ -35,9 +35,9 @@ export default function ReportModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in select-none">
       <div 
-        className={`w-full max-w-md ${themeConfig?.modalBg || 'bg-slate-900/95 border-white/20 shadow-2xl'} backdrop-blur-2xl text-white rounded-3xl border overflow-hidden animate-scale-up max-h-[90vh] flex flex-col transition-colors duration-500`}
+        className={`w-full max-w-md ${themeConfig?.modalBg || 'bg-slate-900/95 border-white/20 shadow-2xl'} backdrop-blur-2xl text-white rounded-3xl border overflow-hidden animate-scale-up max-h-[90vh] flex flex-col transition-colors duration-500 select-none`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -79,22 +79,34 @@ export default function ReportModal({
 
           {/* Quick Metrics Grid */}
           <div className="grid grid-cols-3 gap-2.5">
-            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center">
-              <Clock className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
-              <p className="text-lg font-bold text-white">{formatMinutes(stats.todayMinutes || 0)}</p>
-              <p className="text-[10px] text-white/50 font-medium">Today Focus</p>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center flex flex-col items-center justify-between">
+              <div className="h-8 flex items-center justify-center mb-1">
+                <Clock className="w-5 h-5 text-emerald-400" />
+              </div>
+              <div>
+                <p className="text-lg font-bold text-white leading-tight">{formatMinutes(stats.todayMinutes || 0)}</p>
+                <p className="text-[10px] text-white/50 font-medium">Today Focus</p>
+              </div>
             </div>
 
-            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center">
-              <img src="/logo.png" alt="Sessions" className="w-4 h-4 object-contain mx-auto mb-1" style={{ imageRendering: 'pixelated' }} />
-              <p className="text-lg font-bold text-white">{stats.todaySessions || 0}</p>
-              <p className="text-[10px] text-white/50 font-medium">Sessions Today</p>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center flex flex-col items-center justify-between">
+              <div className="h-8 flex items-center justify-center mb-1">
+                <img src="/logo.png" alt="Sessions" className="w-7 h-7 object-contain drop-shadow-sm" style={{ imageRendering: 'pixelated' }} />
+              </div>
+              <div>
+                <p className="text-lg font-bold text-white leading-tight">{stats.todaySessions || 0}</p>
+                <p className="text-[10px] text-white/50 font-medium">Sessions Today</p>
+              </div>
             </div>
 
-            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center">
-              <CheckCircle className="w-4 h-4 text-blue-400 mx-auto mb-1" />
-              <p className="text-lg font-bold text-white">{stats.tasksCompleted || 0}</p>
-              <p className="text-[10px] text-white/50 font-medium">Tasks Done</p>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center flex flex-col items-center justify-between">
+              <div className="h-8 flex items-center justify-center mb-1">
+                <CheckCircle className="w-5 h-5 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-lg font-bold text-white leading-tight">{stats.tasksCompleted || 0}</p>
+                <p className="text-[10px] text-white/50 font-medium">Tasks Done</p>
+              </div>
             </div>
           </div>
 

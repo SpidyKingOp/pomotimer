@@ -6,9 +6,20 @@
   * {
     font-family: 'JetBrains Mono', monospace;
   }
-  body {
+  html, body {
     font-family: 'JetBrains Mono', monospace;
-    @apply antialiased overflow-x-hidden min-h-screen transition-colors duration-700 ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    @apply antialiased overflow-x-hidden min-h-screen transition-colors duration-700 ease-in-out select-none;
+  }
+  input, textarea {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    @apply select-text;
   }
 }
 

@@ -245,7 +245,7 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen relative overflow-x-hidden bg-gradient-to-br ${activeModeTheme.bg} transition-colors duration-700 ease-in-out text-white flex flex-col justify-between`}
+      className={`min-h-screen relative overflow-x-hidden select-none bg-gradient-to-br ${activeModeTheme.bg} transition-colors duration-700 ease-in-out text-white flex flex-col justify-between`}
     >
       {/* Background Atmosphere Layer */}
       <BackgroundController
