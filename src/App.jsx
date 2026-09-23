@@ -21,8 +21,13 @@ import {
   incrementTasksCompleted,
   resetAllStats
 } from './utils/storage';
+import { updateDynamicFavicon } from './utils/dynamicFavicon';
+import { usePWAInstall } from './utils/usePWAInstall';
 
 export default function App() {
+  // PWA Installation state & trigger
+  const { canInstall, isInstalled, isIOS, installApp } = usePWAInstall();
+
   // Persistence state
   const [settings, setSettings] = useState(loadSettings);
   const [tasks, setTasks] = useState(loadTasks);
@@ -218,14 +223,15 @@ export default function App() {
     };
   }, [isRunning, mode, cycleCount, settings]);
 
-  // Sync document title
+  // Sync document title and dynamic browser tab favicon
   useEffect(() => {
     const mins = Math.floor(timeLeft / 60);
     const secs = timeLeft % 60;
     const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     const modeLabel = mode === 'pomodoro' ? 'Focus' : 'Break';
     document.title = `${formatted} - ${modeLabel} | PomoTimer`;
-  }, [timeLeft, mode]);
+    updateDynamicFavicon(timeLeft, sessionDuration, mode, isRunning);
+  }, [timeLeft, sessionDuration, mode, isRunning]);
 
   // Global keyboard shortcuts
   useEffect(() => {
@@ -361,6 +367,8 @@ export default function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAbout={() => setIsAboutOpen(true)}
         onToggleZen={() => setIsZenOpen(true)}
+        canInstall={canInstall}
+        onInstall={installApp}
         activeThemeConfig={activeModeTheme}
       />
 
@@ -397,6 +405,10 @@ export default function App() {
         settings={settings}
         onUpdateSettings={handleUpdateSettings}
         themeConfig={activeModeTheme}
+        canInstall={canInstall}
+        isInstalled={isInstalled}
+        isIOS={isIOS}
+        onInstall={installApp}
       />
 
       <ReportModal

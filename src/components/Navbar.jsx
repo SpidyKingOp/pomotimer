@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, Settings, Maximize2, Sparkles, Info } from 'lucide-react';
+import { BarChart3, Settings, Maximize2, Sparkles, Info, Download } from 'lucide-react';
 import { playClick } from '../utils/sound';
 
 export default function Navbar({
@@ -7,6 +7,8 @@ export default function Navbar({
   onOpenSettings,
   onOpenAbout,
   onToggleZen,
+  canInstall,
+  onInstall,
   activeThemeConfig
 }) {
   const handleAction = (cb) => {
@@ -41,6 +43,18 @@ export default function Navbar({
 
       {/* Nav Actions */}
       <div className="flex items-center gap-2 sm:gap-2.5">
+        {/* PWA Install Button (shows when browser allows installation) */}
+        {canInstall && (
+          <button
+            onClick={() => handleAction(onInstall)}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 hover:bg-emerald-500/30 active:scale-95 transition-all shadow-sm"
+            title="Install PomoTimer to Desktop or Phone"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Install</span>
+          </button>
+        )}
+
         {/* Fullscreen Zen Mode Button */}
         <button
           onClick={() => handleAction(onToggleZen)}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Volume2, VolumeX, Sparkles, Clock, Bell, Palette, Settings, Layers } from 'lucide-react';
+import { X, Volume2, VolumeX, Sparkles, Clock, Bell, Palette, Settings, Layers, Download, CheckCircle2, Smartphone } from 'lucide-react';
 import { THEMES } from '../utils/themes';
 import { playAlarm, playClick } from '../utils/sound';
 import { getNotificationPermission, requestNotificationPermission, sendPushNotification } from '../utils/notifications';
@@ -9,7 +9,11 @@ export default function SettingsModal({
   onClose,
   settings,
   onUpdateSettings,
-  themeConfig
+  themeConfig,
+  canInstall,
+  isInstalled,
+  isIOS,
+  onInstall
 }) {
   const [notifPermission, setNotifPermission] = useState(getNotificationPermission);
   if (!isOpen) return null;
@@ -358,6 +362,62 @@ export default function SettingsModal({
                     </label>
                   );
                 })}
+              </div>
+            )}
+          </div>
+
+          {/* Section 6: Desktop & Mobile Installation */}
+          <div className="space-y-3 pt-3 border-t border-white/10">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white/60">
+              <Download className="w-3.5 h-3.5" />
+              <span>App Installation</span>
+            </div>
+
+            {isInstalled ? (
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+                <div className="flex items-center gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold text-emerald-200">App Installed</p>
+                    <p className="text-[10px] text-emerald-300/70">Running standalone in desktop/mobile mode</p>
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                  Active
+                </span>
+              </div>
+            ) : canInstall ? (
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all">
+                <div className="pr-3">
+                  <p className="text-xs font-semibold text-white">Install PomoTimer</p>
+                  <p className="text-[10px] text-white/50">Install for offline access and full window focus</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={onInstall}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500 text-slate-950 hover:bg-emerald-400 active:scale-95 transition-all shadow-sm"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Install</span>
+                </button>
+              </div>
+            ) : isIOS ? (
+              <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+                <div className="flex items-center gap-2 text-xs font-semibold text-white">
+                  <Smartphone className="w-3.5 h-3.5 text-white/70" />
+                  <span>iOS Home Screen App</span>
+                </div>
+                <p className="text-[10px] text-white/50 leading-relaxed">
+                  In Safari, tap the <span className="font-semibold text-white">Share button</span> and select <span className="font-semibold text-white">Add to Home Screen</span>.
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/10">
+                <div className="pr-3">
+                  <p className="text-xs font-semibold text-white">Web App Mode</p>
+                  <p className="text-[10px] text-white/50">Installable via browser address bar or menu</p>
+                </div>
+                <span className="text-[10px] font-medium text-white/40">Ready</span>
               </div>
             )}
           </div>
