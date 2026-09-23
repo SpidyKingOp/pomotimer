@@ -129,7 +129,7 @@ export default function App() {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
-    advanceToNextMode();
+    advanceToNextMode(false);
   };
 
   // Reset current timer
@@ -145,20 +145,31 @@ export default function App() {
   };
 
   // Advance to the next mode after timer ends or skip
-  const advanceToNextMode = () => {
+  const advanceToNextMode = (isNaturalEnd = false) => {
     if (mode === 'pomodoro') {
+      const elapsedSeconds = isNaturalEnd
+        ? sessionDuration
+        : Math.max(0, sessionDuration - timeLeft);
+
+      // Convert to actual focused minutes (give at least 1m credit if focused for 30s+)
+      const elapsedMinutes = isNaturalEnd
+        ? Math.round(sessionDuration / 60)
+        : (elapsedSeconds >= 30 ? Math.max(1, Math.round(elapsedSeconds / 60)) : 0);
+
       sendPushNotification('Focus Session Complete!', 'Time to rest and recharge.');
 
-      // Record completed work session
-      const updatedStats = recordCompletedSession('pomodoro', settings.pomodoro);
-      if (updatedStats) setStats(updatedStats);
+      // Record completed work session with actual elapsed minutes
+      if (elapsedMinutes > 0) {
+        const updatedStats = recordCompletedSession('pomodoro', elapsedMinutes);
+        if (updatedStats) setStats(updatedStats);
 
-      // Trigger celebratory confetti for completing a work session
-      confetti({
-        particleCount: 70,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+        // Trigger celebratory confetti for completing a work session
+        confetti({
+          particleCount: 70,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
 
       // Check if long break interval is reached
       const interval = Math.max(1, Number(settings.longBreakInterval) || 1);
@@ -192,7 +203,7 @@ export default function App() {
           if (prev <= 1) {
             clearInterval(timerRef.current);
             playAlarm(settings.alarmSound, settings.volume);
-            advanceToNextMode();
+            advanceToNextMode(true);
             return 0;
           }
           return prev - 1;
