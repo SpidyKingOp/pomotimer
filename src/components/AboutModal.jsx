@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   X, BookOpen, Clock, CheckCircle2, Flame, Sparkles, 
-  Keyboard, Coffee, Target, ExternalLink, HelpCircle,
+  Keyboard, Coffee, Target, HelpCircle,
   Lightbulb, Zap, ShieldCheck, ArrowRight
 } from 'lucide-react';
 import { playClick } from '../utils/sound';
@@ -359,15 +359,9 @@ export default function AboutModal({
 
         {/* Modal Footer */}
         <div className="px-6 py-3.5 border-t border-white/10 bg-white/5 flex items-center justify-between">
-          <a
-            href="https://pomofocus.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white/80 transition-colors"
-          >
-            <span>Inspired by Pomofocus.io</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
+          <span className="text-xs text-white/60 font-medium">
+            Made by Jeevesh
+          </span>
 
           <button
             onClick={() => {
