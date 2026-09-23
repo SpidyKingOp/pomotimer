@@ -21,7 +21,7 @@ export default function Navbar({
           <img 
             src="/logo.png" 
             alt="PomoTimer Logo" 
-            className="w-9 h-9 object-contain transform group-hover:rotate-12 transition-transform duration-300 drop-shadow-sm" 
+            className="w-9 h-9 object-contain drop-shadow-sm" 
             style={{ imageRendering: 'pixelated' }}
           />
           <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white/30 animate-pulse" />

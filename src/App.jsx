@@ -50,33 +50,43 @@ export default function App() {
 
   // Get duration in seconds for a specific mode
   const getModeDuration = (m, currentSettings = settings) => {
-    switch (m) {
-      case 'pomodoro':
-        return currentSettings.pomodoro * 60;
-      case 'shortBreak':
-        return currentSettings.shortBreak * 60;
-      case 'longBreak':
-        return currentSettings.longBreak * 60;
-      default:
-        return 25 * 60;
+    const raw = currentSettings?.[m];
+    if (raw === '' || raw === undefined || raw === null) {
+      switch (m) {
+        case 'pomodoro':
+          return 25 * 60;
+        case 'shortBreak':
+          return 5 * 60;
+        case 'longBreak':
+          return 15 * 60;
+        default:
+          return 25 * 60;
+      }
     }
+    const val = Number(raw);
+    return (!isNaN(val) && val >= 0 ? val : 25) * 60;
   };
 
   // Sync settings updates without restarting ongoing (running or paused) sessions
   const handleUpdateSettings = (newSettings) => {
-    const oldModeDuration = getModeDuration(mode, settings);
-    const newModeDuration = getModeDuration(mode, newSettings);
-    const modeDurationChanged = oldModeDuration !== newModeDuration;
+    const rawVal = newSettings?.[mode];
+    const isEditingEmpty = rawVal === '' || rawVal === undefined || rawVal === null;
 
     setSettings(newSettings);
     saveSettings(newSettings);
 
-    // Only update timeLeft if the current mode's duration actually changed
+    // Only update timeLeft if the field is not empty, duration actually changed
     // AND the timer was pristine (at full duration and unstarted).
     // NEVER reset an ongoing session (running or paused midway)!
-    if (modeDurationChanged && !isRunning && timeLeft === oldModeDuration) {
-      setTimeLeft(newModeDuration);
-      setSessionDuration(newModeDuration);
+    if (!isEditingEmpty) {
+      const oldModeDuration = getModeDuration(mode, settings);
+      const newModeDuration = getModeDuration(mode, newSettings);
+      const modeDurationChanged = oldModeDuration !== newModeDuration;
+
+      if (modeDurationChanged && !isRunning && timeLeft === oldModeDuration) {
+        setTimeLeft(newModeDuration);
+        setSessionDuration(newModeDuration);
+      }
     }
   };
 
@@ -137,7 +147,8 @@ export default function App() {
       });
 
       // Check if long break interval is reached
-      const isLongBreakTime = cycleCount % settings.longBreakInterval === 0;
+      const interval = Math.max(1, Number(settings.longBreakInterval) || 1);
+      const isLongBreakTime = cycleCount % interval === 0;
       const nextMode = isLongBreakTime ? 'longBreak' : 'shortBreak';
       const dur = getModeDuration(nextMode);
 

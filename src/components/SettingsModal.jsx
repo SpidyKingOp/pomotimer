@@ -18,6 +18,41 @@ export default function SettingsModal({
     onUpdateSettings({ ...settings, [key]: value });
   };
 
+  const handleTimeChange = (key, rawValue) => {
+    if (rawValue === '') {
+      handleChange(key, '');
+      return;
+    }
+    const val = parseInt(rawValue, 10);
+    if (!isNaN(val)) {
+      handleChange(key, Math.max(0, val));
+    }
+  };
+
+  const handleTimeBlur = (key, defaultVal = 1, min = 0) => {
+    if (settings[key] === '') {
+      handleChange(key, defaultVal);
+    } else {
+      const val = Number(settings[key]);
+      if (isNaN(val) || val < min) {
+        handleChange(key, defaultVal);
+      }
+    }
+  };
+
+  const handleCloseModal = () => {
+    const sanitized = {
+      ...settings,
+      pomodoro: settings.pomodoro === '' ? 25 : Math.max(0, Number(settings.pomodoro) || 0),
+      shortBreak: settings.shortBreak === '' ? 5 : Math.max(0, Number(settings.shortBreak) || 0),
+      longBreak: settings.longBreak === '' ? 15 : Math.max(0, Number(settings.longBreak) || 0),
+      longBreakInterval: settings.longBreakInterval === '' ? 4 : Math.max(1, Number(settings.longBreakInterval) || 1),
+    };
+    onUpdateSettings(sanitized);
+    playClick(0.2);
+    onClose();
+  };
+
   const handleTestSound = () => {
     playAlarm(settings.alarmSound, settings.volume);
   };
@@ -42,10 +77,7 @@ export default function SettingsModal({
             <h2 className="text-base font-bold tracking-wide">Settings</h2>
           </div>
           <button
-            onClick={() => {
-              playClick(0.2);
-              onClose();
-            }}
+            onClick={handleCloseModal}
             className="p-1.5 rounded-xl hover:bg-white/10 text-white/60 hover:text-white transition-colors"
           >
             <X className="w-5 h-5" />
@@ -67,10 +99,11 @@ export default function SettingsModal({
                 </label>
                 <input
                   type="number"
-                  min="1"
+                  min="0"
                   max="120"
                   value={settings.pomodoro}
-                  onChange={(e) => handleChange('pomodoro', Math.max(1, parseInt(e.target.value) || 1))}
+                  onChange={(e) => handleTimeChange('pomodoro', e.target.value)}
+                  onBlur={() => handleTimeBlur('pomodoro', 25, 0)}
                   className="w-full bg-white/10 border border-white/15 rounded-xl px-3 py-2 text-sm font-semibold text-center focus:outline-none focus:border-white/40"
                 />
               </div>
@@ -81,10 +114,11 @@ export default function SettingsModal({
                 </label>
                 <input
                   type="number"
-                  min="1"
+                  min="0"
                   max="60"
                   value={settings.shortBreak}
-                  onChange={(e) => handleChange('shortBreak', Math.max(1, parseInt(e.target.value) || 1))}
+                  onChange={(e) => handleTimeChange('shortBreak', e.target.value)}
+                  onBlur={() => handleTimeBlur('shortBreak', 5, 0)}
                   className="w-full bg-white/10 border border-white/15 rounded-xl px-3 py-2 text-sm font-semibold text-center focus:outline-none focus:border-white/40"
                 />
               </div>
@@ -95,10 +129,11 @@ export default function SettingsModal({
                 </label>
                 <input
                   type="number"
-                  min="1"
+                  min="0"
                   max="90"
                   value={settings.longBreak}
-                  onChange={(e) => handleChange('longBreak', Math.max(1, parseInt(e.target.value) || 1))}
+                  onChange={(e) => handleTimeChange('longBreak', e.target.value)}
+                  onBlur={() => handleTimeBlur('longBreak', 15, 0)}
                   className="w-full bg-white/10 border border-white/15 rounded-xl px-3 py-2 text-sm font-semibold text-center focus:outline-none focus:border-white/40"
                 />
               </div>
@@ -143,7 +178,8 @@ export default function SettingsModal({
                 min="1"
                 max="12"
                 value={settings.longBreakInterval}
-                onChange={(e) => handleChange('longBreakInterval', Math.max(1, parseInt(e.target.value) || 1))}
+                onChange={(e) => handleTimeChange('longBreakInterval', e.target.value)}
+                onBlur={() => handleTimeBlur('longBreakInterval', 4, 1)}
                 className="w-16 bg-white/10 border border-white/15 rounded-xl px-2.5 py-1 text-xs font-semibold text-center focus:outline-none focus:border-white/40"
               />
             </div>
@@ -330,10 +366,7 @@ export default function SettingsModal({
         {/* Modal Footer */}
         <div className="px-6 py-3.5 border-t border-white/10 bg-white/5 flex justify-end">
           <button
-            onClick={() => {
-              playClick(0.2);
-              onClose();
-            }}
+            onClick={handleCloseModal}
             className="px-5 py-2 text-xs font-bold bg-white text-slate-900 rounded-xl hover:bg-white/90 active:scale-95 transition-all"
           >
             Done
