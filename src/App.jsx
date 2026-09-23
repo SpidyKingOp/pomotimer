@@ -222,6 +222,19 @@ export default function App() {
         return;
       }
 
+      // Alt+S: Skip session
+      if (e.altKey && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        handleSkip();
+        return;
+      }
+
+      // Ignore all other shortcuts if any modifier key (Ctrl, Meta/Command, Alt) is pressed
+      // This prevents Ctrl+S, Ctrl+R, Ctrl+F, Ctrl+A from hijacking browser actions or opening modals
+      if (e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+
       // Space: Toggle Play/Pause
       if (e.code === 'Space') {
         e.preventDefault();
@@ -234,7 +247,7 @@ export default function App() {
         setIsZenOpen((z) => !z);
       }
 
-      // 'S': Toggle Settings
+      // 'S': Toggle Settings (pure 's' without modifiers)
       if (e.key === 's' || e.key === 'S') {
         e.preventDefault();
         setIsSettingsOpen((s) => !s);
@@ -250,12 +263,6 @@ export default function App() {
       if (e.key === 'a' || e.key === 'A' || e.key === '?') {
         e.preventDefault();
         setIsAboutOpen((ab) => !ab);
-      }
-
-      // Alt+S: Skip session
-      if (e.altKey && (e.key === 's' || e.key === 'S')) {
-        e.preventDefault();
-        handleSkip();
       }
     };
 

@@ -18,7 +18,7 @@ export default function ZenMode({
     if (!isOpen) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' || e.key === 'f' || e.key === 'F') {
+      if (e.key === 'Escape' || ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey)) {
         onClose();
       }
     };
