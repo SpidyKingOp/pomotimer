@@ -342,7 +342,7 @@ export default function AboutModal({
                   { key: 'F', desc: 'Toggle Fullscreen Zen Mode' },
                   { key: 'S', desc: 'Open Settings & Sound controls' },
                   { key: 'R', desc: 'Open Focus Report & Activity dashboard' },
-                  { key: 'A or ?', desc: 'Open this About & Guide modal' },
+                  { key: '? or / or A', desc: 'Open this About & Guide modal' },
                   { key: 'Esc', desc: 'Close any open modal or Zen mode' },
                 ].map((s) => (
                   <div key={s.key} className="flex items-center justify-between px-4 py-2.5">

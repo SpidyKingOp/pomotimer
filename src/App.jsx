@@ -313,8 +313,16 @@ export default function App() {
         return;
       }
 
-      // 'A' or '?': Toggle About & Guide modal
-      if (e.key === 'a' || e.key === 'A' || e.key === '?') {
+      // 'A', '?', '/', or 'H': Toggle About & Guide modal
+      if (
+        e.key === 'a' ||
+        e.key === 'A' ||
+        e.key === '?' ||
+        e.key === '/' ||
+        e.code === 'Slash' ||
+        e.key === 'h' ||
+        e.key === 'H'
+      ) {
         e.preventDefault();
         setIsAboutOpen((ab) => !ab);
         return;

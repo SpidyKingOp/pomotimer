@@ -75,7 +75,7 @@ export default function Navbar({
         <button
           onClick={() => handleAction(onOpenAbout)}
           className="flex items-center justify-center w-8 h-8 rounded-xl text-white/90 glass-pill active:scale-95 hover:text-white transition-all"
-          title="About & Guide (Key: A or ?)"
+          title="About & Guide (Key: ? or / or A)"
           aria-label="About PomoTimer & Guide"
         >
           <Info className="w-4 h-4 text-white/90" />
