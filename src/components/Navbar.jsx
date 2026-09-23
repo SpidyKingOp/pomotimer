@@ -1,10 +1,11 @@
 import React from 'react';
-import { BarChart3, Settings, Maximize2, Sparkles } from 'lucide-react';
+import { BarChart3, Settings, Maximize2, Sparkles, Info } from 'lucide-react';
 import { playClick } from '../utils/sound';
 
 export default function Navbar({
   onOpenReport,
   onOpenSettings,
+  onOpenAbout,
   onToggleZen,
   activeThemeConfig
 }) {
@@ -68,6 +69,16 @@ export default function Navbar({
         >
           <Settings className="w-4 h-4 text-white/90" />
           <span className="hidden sm:inline">Settings</span>
+        </button>
+
+        {/* About Button - small 'i' with circle around it */}
+        <button
+          onClick={() => handleAction(onOpenAbout)}
+          className="flex items-center justify-center w-8 h-8 rounded-xl text-white/90 glass-pill active:scale-95 hover:text-white transition-all"
+          title="About & Guide (Key: A or ?)"
+          aria-label="About PomoTimer & Guide"
+        >
+          <Info className="w-4 h-4 text-white/90" />
         </button>
       </div>
     </header>

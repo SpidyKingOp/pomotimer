@@ -6,6 +6,7 @@ import TaskChecklist from './components/TaskChecklist';
 import SettingsModal from './components/SettingsModal';
 import ReportModal from './components/ReportModal';
 import ZenMode from './components/ZenMode';
+import AboutModal from './components/AboutModal';
 import BackgroundController from './components/backgrounds/BackgroundController';
 import { THEMES, DEFAULT_THEME } from './utils/themes';
 import { playAlarm } from './utils/sound';
@@ -31,6 +32,7 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isZenOpen, setIsZenOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   // Timer state
   const [mode, setMode] = useState('pomodoro'); // 'pomodoro' | 'shortBreak' | 'longBreak'
@@ -206,10 +208,11 @@ export default function App() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       // If a modal is open, allow Escape to close it and prevent other shortcuts
-      if (isSettingsOpen || isReportOpen) {
+      if (isSettingsOpen || isReportOpen || isAboutOpen) {
         if (e.key === 'Escape') {
           setIsSettingsOpen(false);
           setIsReportOpen(false);
+          setIsAboutOpen(false);
         }
         return;
       }
@@ -243,6 +246,12 @@ export default function App() {
         setIsReportOpen((ro) => !ro);
       }
 
+      // 'A' or '?': Toggle About & Guide modal
+      if (e.key === 'a' || e.key === 'A' || e.key === '?') {
+        e.preventDefault();
+        setIsAboutOpen((ab) => !ab);
+      }
+
       // Alt+S: Skip session
       if (e.altKey && (e.key === 's' || e.key === 'S')) {
         e.preventDefault();
@@ -252,7 +261,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mode, cycleCount, settings, isSettingsOpen, isReportOpen]);
+  }, [mode, cycleCount, settings, isSettingsOpen, isReportOpen, isAboutOpen]);
 
   return (
     <div
@@ -269,6 +278,7 @@ export default function App() {
       <Navbar
         onOpenReport={() => setIsReportOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenAbout={() => setIsAboutOpen(true)}
         onToggleZen={() => setIsZenOpen(true)}
         activeThemeConfig={activeModeTheme}
       />
@@ -326,6 +336,12 @@ export default function App() {
         onSkip={handleSkip}
         mode={mode}
         activeTask={activeTask}
+        themeConfig={activeModeTheme}
+      />
+
+      <AboutModal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
         themeConfig={activeModeTheme}
       />
     </div>
