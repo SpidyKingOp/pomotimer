@@ -138,19 +138,23 @@ export default function Timer({
         <div className="mt-8 flex items-center gap-4 w-full justify-center">
           {/* Reset button */}
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.currentTarget.blur();
               playClick(0.2);
               onReset();
             }}
             className="p-3.5 rounded-2xl glass-pill text-white/80 hover:text-white active:scale-95 transition-transform"
-            title="Reset Session"
+            title="Reset Session (Alt+R)"
           >
             <RotateCcw className="w-5 h-5" />
           </button>
 
           {/* Big START / PAUSE Button */}
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.currentTarget.blur();
               playClick(0.25);
               onStartPause();
             }}
@@ -172,7 +176,9 @@ export default function Timer({
 
           {/* Fast-forward / Skip button */}
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.currentTarget.blur();
               playClick(0.2);
               onSkip();
             }}

@@ -337,12 +337,13 @@ export default function AboutModal({
               <div className="divide-y divide-white/10 rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
                 {[
                   { key: 'Space', desc: 'Start or Pause the timer countdown' },
+                  { key: 'Alt + R', desc: 'Reset current session timer' },
+                  { key: 'Alt + S', desc: 'Skip to the next session mode' },
                   { key: 'F', desc: 'Toggle Fullscreen Zen Mode' },
                   { key: 'S', desc: 'Open Settings & Sound controls' },
                   { key: 'R', desc: 'Open Focus Report & Activity dashboard' },
                   { key: 'A or ?', desc: 'Open this About & Guide modal' },
-                  { key: 'Alt + S', desc: 'Skip to the next session mode' },
-                  { key: 'Esc', desc: 'Close any open modal or drawer' },
+                  { key: 'Esc', desc: 'Close any open modal or Zen mode' },
                 ].map((s) => (
                   <div key={s.key} className="flex items-center justify-between px-4 py-2.5">
                     <span className="text-xs text-white/75 font-medium">{s.desc}</span>

@@ -53,20 +53,20 @@ export default function App() {
   // Get duration in seconds for a specific mode
   const getModeDuration = (m, currentSettings = settings) => {
     const raw = currentSettings?.[m];
-    if (raw === '' || raw === undefined || raw === null) {
-      switch (m) {
-        case 'pomodoro':
-          return 25 * 60;
-        case 'shortBreak':
-          return 5 * 60;
-        case 'longBreak':
-          return 15 * 60;
-        default:
-          return 25 * 60;
-      }
-    }
     const val = Number(raw);
-    return (!isNaN(val) && val >= 0 ? val : 25) * 60;
+    if (!isNaN(val) && val > 0) {
+      return val * 60;
+    }
+    switch (m) {
+      case 'pomodoro':
+        return 25 * 60;
+      case 'shortBreak':
+        return 5 * 60;
+      case 'longBreak':
+        return 15 * 60;
+      default:
+        return 25 * 60;
+    }
   };
 
   // Sync settings updates without restarting ongoing (running or paused) sessions
@@ -112,6 +112,10 @@ export default function App() {
 
   // Change mode manually
   const handleSwitchMode = (newMode) => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     const dur = getModeDuration(newMode);
     setMode(newMode);
     setIsRunning(false);
@@ -121,11 +125,19 @@ export default function App() {
 
   // Skip session
   const handleSkip = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     advanceToNextMode();
   };
 
   // Reset current timer
   const handleReset = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     const dur = getModeDuration(mode);
     setIsRunning(false);
     setTimeLeft(dur);
@@ -207,7 +219,40 @@ export default function App() {
   // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // If a modal is open, allow Escape to close it and prevent other shortcuts
+      // Ignore shortcut if user is typing in an input
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+        return;
+      }
+
+      // If in Zen mode, handle Esc, F, and Space exclusively
+      if (isZenOpen) {
+        if (e.key === 'Escape' || ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey)) {
+          e.preventDefault();
+          setIsZenOpen(false);
+          return;
+        }
+        if (e.code === 'Space') {
+          e.preventDefault();
+          if (document.activeElement && typeof document.activeElement.blur === 'function') {
+            document.activeElement.blur();
+          }
+          setIsRunning((r) => !r);
+          return;
+        }
+        if (e.altKey && (e.key === 's' || e.key === 'S' || e.code === 'KeyS')) {
+          e.preventDefault();
+          handleSkip();
+          return;
+        }
+        if (e.altKey && (e.key === 'r' || e.key === 'R' || e.code === 'KeyR')) {
+          e.preventDefault();
+          handleReset();
+          return;
+        }
+        return;
+      }
+
+      // If a standard modal is open, allow Escape to close it
       if (isSettingsOpen || isReportOpen || isAboutOpen) {
         if (e.key === 'Escape') {
           setIsSettingsOpen(false);
@@ -217,15 +262,17 @@ export default function App() {
         return;
       }
 
-      // Ignore shortcut if user is typing in an input
-      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+      // Alt+S: Skip session
+      if (e.altKey && (e.key === 's' || e.key === 'S' || e.code === 'KeyS')) {
+        e.preventDefault();
+        handleSkip();
         return;
       }
 
-      // Alt+S: Skip session
-      if (e.altKey && (e.key === 's' || e.key === 'S')) {
+      // Alt+R: Reset current session
+      if (e.altKey && (e.key === 'r' || e.key === 'R' || e.code === 'KeyR')) {
         e.preventDefault();
-        handleSkip();
+        handleReset();
         return;
       }
 
@@ -238,37 +285,45 @@ export default function App() {
       // Space: Toggle Play/Pause
       if (e.code === 'Space') {
         e.preventDefault();
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
         setIsRunning((r) => !r);
+        return;
       }
 
       // 'F': Toggle Zen mode
       if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
-        setIsZenOpen((z) => !z);
+        setIsZenOpen(true);
+        return;
       }
 
       // 'S': Toggle Settings (pure 's' without modifiers)
       if (e.key === 's' || e.key === 'S') {
         e.preventDefault();
         setIsSettingsOpen((s) => !s);
+        return;
       }
 
       // 'R': Toggle Report
       if (e.key === 'r' || e.key === 'R') {
         e.preventDefault();
         setIsReportOpen((ro) => !ro);
+        return;
       }
 
       // 'A' or '?': Toggle About & Guide modal
       if (e.key === 'a' || e.key === 'A' || e.key === '?') {
         e.preventDefault();
         setIsAboutOpen((ab) => !ab);
+        return;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mode, cycleCount, settings, isSettingsOpen, isReportOpen, isAboutOpen]);
+  }, [mode, cycleCount, settings, isSettingsOpen, isReportOpen, isAboutOpen, isZenOpen]);
 
   return (
     <div
@@ -341,6 +396,7 @@ export default function App() {
         isRunning={isRunning}
         onStartPause={() => setIsRunning(!isRunning)}
         onSkip={handleSkip}
+        onReset={handleReset}
         mode={mode}
         activeTask={activeTask}
         themeConfig={activeModeTheme}

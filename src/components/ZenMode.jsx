@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Minimize2, Play, Pause, SkipForward, Target } from 'lucide-react';
+import React from 'react';
+import { Minimize2, Play, Pause, SkipForward, RotateCcw, Target } from 'lucide-react';
 import { playClick } from '../utils/sound';
 
 export default function ZenMode({
@@ -10,22 +10,11 @@ export default function ZenMode({
   isRunning,
   onStartPause,
   onSkip,
+  onReset,
   mode,
   activeTask,
   themeConfig
 }) {
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' || ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey)) {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
   if (!isOpen) return null;
 
   // SVG calculations for larger Zen ring
@@ -122,8 +111,25 @@ export default function ZenMode({
 
         {/* Controls */}
         <div className="mt-10 flex items-center gap-4">
+          {/* Reset Button */}
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.currentTarget.blur();
+              playClick(0.2);
+              onReset();
+            }}
+            className="p-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-white active:scale-95 transition-all"
+            title="Reset Session (Alt+R)"
+          >
+            <RotateCcw className="w-5 h-5" />
+          </button>
+
+          {/* Start/Pause Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.currentTarget.blur();
               playClick(0.25);
               onStartPause();
             }}
@@ -142,13 +148,16 @@ export default function ZenMode({
             )}
           </button>
 
+          {/* Skip Button */}
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.currentTarget.blur();
               playClick(0.2);
               onSkip();
             }}
             className="p-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-white active:scale-95 transition-all"
-            title="Skip to next session"
+            title="Skip to next session (Alt+S)"
           >
             <SkipForward className="w-5 h-5" />
           </button>
